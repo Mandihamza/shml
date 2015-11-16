@@ -1,14 +1,17 @@
 # By default 'bump' does nothing.
 VERSION?=$(shell cat VERSION)
 
+test/shunt.sh:
+	cd test && curl -L https://raw.githubusercontent.com/odb/shunt/latest/install.sh | bash -s latest local
+
 test: test/shunt.sh .PHONY
 	./test/shunt.sh --verbose ./test/*_tests.sh
 
+test/%: .PHONY
+	./test/shunt.sh --verbose $@
+
 clean:
 	-rm test/shunt.sh
-
-test/shunt.sh:
-	cd test && curl -L https://raw.githubusercontent.com/odb/shunt/latest/install.sh | bash -s latest local
 
 BRANCH=master
 
